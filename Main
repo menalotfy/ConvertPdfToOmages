@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using GroupDocs.Conversion.Options.Convert;
+using GrabzIt;
+using System.IO;
+using GroupDocs.Conversion.Contracts;
+using GroupDocs.Conversion;
+using GroupDocs.Conversion.FileTypes;
+
+namespace ConvertPdfToImages
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {string outputFolder = @"F:\Images"; 
+            string outputFileTemplate = Path.Combine(outputFolder, "converted-page-{0}.jpg");
+            SavePageStream getPageStream = page => new FileStream(string.Format(outputFileTemplate, page), FileMode.Create);
+            using (Converter converter = new Converter(@"F:\PDfs\3kar.pdf"))
+            {
+                ImageConvertOptions options = new ImageConvertOptions
+                {
+                    Format = ImageFileType.Jpeg
+                };
+
+                converter.Convert(getPageStream, options);
+                Console.WriteLine("this is done");
+            }
+        }
+
+    }
+}
